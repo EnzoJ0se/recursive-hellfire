@@ -1,5 +1,4 @@
 # RECURSIVE HELLFIRE
----
 
 A 2d third person shooter with gameplay focus, the idea is a rogue lite with a "bullet hell" style.
 The focus is build up a class til the boss of the level. Maybe add dungens on levels and think in a
