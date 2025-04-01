@@ -5,4 +5,5 @@ The focus is build up a class til the boss of the level. Maybe add dungens on le
 procedural end game.
 
 OBS: this is a side projetc to learn more about lua and love2d.
+
 OBS 2: Thats just for fun.
