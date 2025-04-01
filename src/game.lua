@@ -8,7 +8,9 @@ M.load = function()
 	Menu.load()
 end
 
-function M:update(dt) end
+function M:update(dt)
+	-- TODO
+end
 
 M.draw = function()
 	love.graphics.setBackgroundColor(0.5, 0.5, 0.5)
