@@ -1,0 +1,6 @@
+return {
+	MENU = 'MENU',
+	IN_GAME = 'IN_GAME',
+	PAUSED = 'PAUSED',
+	GAME_OVER = 'GAME_OVER',
+}
