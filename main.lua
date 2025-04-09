@@ -1,13 +1,13 @@
-Game = require("src.game");
+Game = require("src.game")
 
 function love.load()
-    Game.load();
+    Game.load()
 end
 
 function love.update(dt)
-    Game:update(dt);
+    Game:update(dt)
 end
 
 function love.draw()
-    Game.draw();
+    Game.draw()
 end

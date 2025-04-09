@@ -1,12 +1,9 @@
-M = {}
+GameState = {}
 
-M.load = function()
-end
+GameState.load = function() end
 
-function M:update(self, dt)
-end
+function GameState:update(self, dt) end
 
-M.draw = function()
-end
+GameState.draw = function() end
 
-return M;
+return GameState
