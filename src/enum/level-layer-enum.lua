@@ -4,7 +4,7 @@
 ---@field walls string
 local LevelLayerEnum = {
     BACKGROUND = "background",
-    TREES = "trees",
+    BARRIER = "barriers",
     WALLS = "walls",
 }
 

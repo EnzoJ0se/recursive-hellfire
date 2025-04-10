@@ -41,8 +41,8 @@ end
 ---@return WorldObject
 function World:createObject(createShape, type, opts)
     local object = setmetatable({ x = opts.x, y = opts.y }, { __index = Object })
-    local x = (opts.x + opts.width / 2) / meter
-    local y = (opts.y + opts.height / 2) / meter
+    local x = (opts.x + opts.width ) / meter
+    local y = (opts.y + opts.height) / meter
 
     --TODO: fix body position
     object.body = love.physics.newBody(self.instance, x, y, opts.body_type or "static")

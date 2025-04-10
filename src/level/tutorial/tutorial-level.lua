@@ -24,7 +24,7 @@ TutorialLevel.__index = TutorialLevel
 
 function TutorialLevel:load()
     self.world = World:new({})
-    map = Map:new("src/level/tutorial/tutorial-map.lua", { LevelLayerEnum.BACKGROUND, LevelLayerEnum.TREES })
+    map = Map:new("src/level/tutorial/tutorial-map.lua", { LevelLayerEnum.BACKGROUND, LevelLayerEnum.BARRIER })
     camera = Camera:new({ width = map.width, height = map.height })
 
     self:loadColliders()
