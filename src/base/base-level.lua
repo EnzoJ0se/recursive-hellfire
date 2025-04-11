@@ -28,12 +28,11 @@ function BaseLevel:new(opts)
 end
 
 BaseLevel.createPlayerFn = function(body, opts)
-    return love.physics.newRectangleShape(opts.x, opts.y, 32, 32)
+    return love.physics.newRectangleShape(opts.x, opts.y, opts.width, opts.height)
 end
 
 BaseLevel.createWallFn = function(body, opts)
-    --TODO: fix shape position
-    return love.physics.newRectangleShape(opts.x, opts.y, opts.width, opts.height)
+    return love.physics.newRectangleShape(opts.width, opts.height)
 end
 
 return BaseLevel

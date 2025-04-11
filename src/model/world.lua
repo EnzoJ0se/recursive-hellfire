@@ -40,12 +40,14 @@ end
 ---@param opts table
 ---@return WorldObject
 function World:createObject(createShape, type, opts)
-    local object = setmetatable({ x = opts.x, y = opts.y }, { __index = Object })
-    local x = (opts.x + opts.width ) / meter
-    local y = (opts.y + opts.height) / meter
+    local object = setmetatable({
+        x = opts.x,
+        y = opts.y,
+        width = opts.width,
+        height = opts.height,
+    }, { __index = Object })
 
-    --TODO: fix body position
-    object.body = love.physics.newBody(self.instance, x, y, opts.body_type or "static")
+    object.body = love.physics.newBody(self.instance, opts.x, opts.y, opts.body_type or "static")
     object.shape = createShape(object.body, opts)
     object.fixture = love.physics.newFixture(object.body, object.shape, opts.density or 1)
 

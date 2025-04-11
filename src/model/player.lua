@@ -12,8 +12,8 @@ function Player:new(worldObject)
     local instance = BaseCharacter:new({
         sprite = "assets/sprites/player-sprite.png",
         world_object = worldObject,
-        x = 0,
-        y = 0,
+        x = worldObject.x - (worldObject.width / 2),
+        y = worldObject.y - (worldObject.height / 2),
     })
     setmetatable(instance, self)
 
@@ -58,7 +58,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
-    love.graphics.draw(self.sprite, self.x, self.y, 0, 1.5, 1.5)
+    love.graphics.draw(self.sprite, self.x, self.y)
 end
 
 return Player

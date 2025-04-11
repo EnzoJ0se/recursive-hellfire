@@ -51,8 +51,8 @@ end
 
 function TutorialLevel:loadColliders()
     self.world:createObject(self.createPlayerFn, WorldObjectTypeEnum.PLAYER, {
-        x = 32 * 0.85,
-        y = 32 * 0.85,
+        x = 16,
+        y = 16,
         width = 32,
         height = 32,
         body_type = WorldBodyTypeEnum.DYNAMIC,
@@ -62,8 +62,8 @@ function TutorialLevel:loadColliders()
     if map.instance.layers[LevelLayerEnum.WALLS] then
         for _, object in ipairs(map.instance.layers[LevelLayerEnum.WALLS].objects) do
             self.world:createObject(self.createWallFn, WorldObjectTypeEnum.WALL, {
-                x = object.x,
-                y = object.y,
+                x = object.x + (object.width / 2),
+                y = object.y + (object.height / 2),
                 body_type = WorldBodyTypeEnum.STATIC,
                 width = object.width,
                 height = object.height,
