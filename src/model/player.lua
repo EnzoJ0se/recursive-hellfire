@@ -14,6 +14,8 @@ function Player:new(worldObject)
         world_object = worldObject,
         x = worldObject.x - (worldObject.width / 2),
         y = worldObject.y - (worldObject.height / 2),
+        width = worldObject.width,
+        height = worldObject.height,
     })
     setmetatable(instance, self)
 
@@ -27,7 +29,7 @@ function Player:move(x, y)
     self.y = self.y + y
 end
 
-function Player:update(dt)
+function Player:update(dt, mapWidth, mapHeight)
     local isMoving = false
 
     if love.keyboard.isDown("w") then
@@ -54,7 +56,15 @@ function Player:update(dt)
         self.world_object.body:setLinearVelocity(0, 0)
     end
 
-    self.x, self.y = self.world_object.body:getPosition()
+    local x, y = self.world_object.body:getPosition()
+
+    if x < 0 then x = 0 end
+    if y < 0 then y = 0 end
+    if x > mapWidth - self.width then x = mapWidth - self.width end
+    if y > mapHeight - self.height then y = mapHeight - self.height end
+
+    self.world_object.body:setPosition(x, y)
+    self.x, self.y = x, y
 end
 
 function Player:draw()

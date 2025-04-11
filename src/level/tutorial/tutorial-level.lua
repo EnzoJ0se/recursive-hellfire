@@ -35,7 +35,10 @@ end
 function TutorialLevel:update(dt)
     map:update(dt)
     self.world:update(dt)
-    self.player:update(dt)
+
+    local width = map.instance.width * map.instance.tilewidth
+    local height = map.instance.height * map.instance.tileheight
+    self.player:update(dt, width, height)
 
     camera:move(self.player.x, self.player.y)
 end
