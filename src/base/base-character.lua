@@ -21,6 +21,7 @@ local BaseCharacter = {
 }
 BaseCharacter.__index = BaseCharacter
 
+---@param opts table
 function BaseCharacter:new(opts)
     local character = {
         x = opts.x or BaseCharacter.x,

@@ -15,7 +15,9 @@ local Camera = {
 }
 Camera.__index = Camera
 
+---@type number
 local screenWidth = love.graphics.getWidth()
+---@type number
 local screenHeight = love.graphics.getHeight()
 
 function Camera:new(opts)
@@ -34,6 +36,8 @@ function Camera:new(opts)
     return camera
 end
 
+---@param x number
+---@param y number
 function Camera:move(x, y)
     self.x = x
     self.y = y
@@ -56,6 +60,7 @@ function Camera:move(x, y)
     end
 end
 
+---@param callback fun()
 function Camera:draw(callback)
     self:start()
     callback()
@@ -74,6 +79,8 @@ function Camera:stop()
     love.graphics.pop()
 end
 
+---@param x number
+---@param y number
 function Camera:getGlobalCoordinates(x, y)
     return (x + self.x - screenWidth / 2), (y + self.y - screenHeight / 2)
 end

@@ -12,6 +12,7 @@ local BaseLevel = {
 }
 BaseLevel.__index = BaseLevel
 
+---@param opts table
 function BaseLevel:new(opts)
     local level = {
         name = opts.name or BaseLevel.name,

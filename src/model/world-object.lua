@@ -17,6 +17,7 @@ local WorldObject = {
 }
 WorldObject.__index = WorldObject
 
+---@param opts table
 function WorldObject:new(opts)
     local object = {
         x = opts.x or WorldObject.x,
