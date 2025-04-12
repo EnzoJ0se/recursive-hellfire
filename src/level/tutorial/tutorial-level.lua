@@ -8,30 +8,31 @@ local World = require("src.model.world")
 local WorldObjectTypeEnum = require("src.enum.world.world-object-type-enum")
 local WorldBodyTypeEnum = require("src.enum.world.world-body-type-enum")
 
----@field camera Camera
-local camera = nil
-
----@field map Map
-local map = nil
-
----@field levelLayers MapLayer[]
-local levelLayers = {
-    { name = LevelLayerEnum.WALLS, object_type = WorldObjectTypeEnum.WALL, body_type = WorldBodyTypeEnum.STATIC },
-}
-
 ---@class TutorialLevel : BaseLevel
 ---@field name string
 ---@field player Player
 ---@field enemies table
 local TutorialLevel = setmetatable({
     name = "tutorial-level",
+    tileset = "src/level/tutorial/tutorial-map.lua",
     player = nil,
     enemies = {},
 }, { __index = BaseLevel })
 TutorialLevel.__index = TutorialLevel
 
+---@type Camera
+local camera
+
+---@type Map
+local map
+
+---@type MapLayer[]
+local levelLayers = {
+    { name = LevelLayerEnum.WALLS, object_type = WorldObjectTypeEnum.WALL, body_type = WorldBodyTypeEnum.STATIC },
+}
+
 function TutorialLevel:load()
-    map = Map:new("src/level/tutorial/tutorial-map.lua", { LevelLayerEnum.BACKGROUND, LevelLayerEnum.BARRIER })
+    map = Map:new(self.tileset, { LevelLayerEnum.BACKGROUND, LevelLayerEnum.BARRIER })
     camera = Camera:new({ width = map.width, height = map.height })
 
     self.world = World:new({})
@@ -50,11 +51,12 @@ end
 
 function TutorialLevel:draw()
     camera:draw(function()
-        love.graphics.setColor(1, 1, 1)
         map:draw()
         self.world:draw()
         self.player:draw()
     end)
+
+    love.graphics.print("dash cooldown: " .. tostring(self.player.dash_cooldown), 10, 20)
 end
 
 return TutorialLevel

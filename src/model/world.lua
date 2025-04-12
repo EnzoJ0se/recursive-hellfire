@@ -21,6 +21,7 @@ local World = {
 }
 World.__index = World
 
+---@type number
 local meter = 32
 
 ---@param dt number
@@ -78,12 +79,12 @@ function World:createPlayer(player)
     local spriteH = player.sprite:getHeight()
 
     local playerFn = function(body, opts)
-        return love.physics.newRectangleShape(0, 0, spriteW, spriteW)
+        return love.physics.newRectangleShape(0, 0, spriteW / 1.2, spriteH / 1.2)
     end
 
     local playerObject = self:createObject(playerFn, WorldObjectTypeEnum.PLAYER, {
-        x = 64,
-        y = 64,
+        x = love.graphics.getWidth() / 2,
+        y = love.graphics.getHeight() / 2,
         width = 64,
         height = 64,
         body_type = WorldBodyTypeEnum.DYNAMIC,
