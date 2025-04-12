@@ -3,6 +3,7 @@ local WorldObject = require("src.model.world-object")
 ---@class BaseCharacter
 ---@field x number
 ---@field y number
+---@field angle number
 ---@field width number
 ---@field height number
 ---@field sprite love.Image
@@ -11,6 +12,7 @@ local WorldObject = require("src.model.world-object")
 local BaseCharacter = {
     x = 0,
     y = 0,
+    angle = 0,
     width = 0,
     height = 0,
     sprite = nil,

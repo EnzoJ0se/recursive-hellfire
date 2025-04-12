@@ -27,12 +27,4 @@ function BaseLevel:new(opts)
     return level
 end
 
-BaseLevel.createPlayerFn = function(body, opts)
-    return love.physics.newRectangleShape(opts.x, opts.y, opts.width, opts.height)
-end
-
-BaseLevel.createWallFn = function(body, opts)
-    return love.physics.newRectangleShape(opts.width, opts.height)
-end
-
 return BaseLevel

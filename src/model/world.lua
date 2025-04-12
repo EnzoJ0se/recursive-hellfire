@@ -1,4 +1,5 @@
-local WorldObjectTypeEnum = require("src.enum.world.world-object-type")
+local WorldObjectTypeEnum = require("src.enum.world.world-object-type-enum")
+local WorldBodyTypeEnum = require("src.enum.world.world-body-type-enum")
 local Object = require("src.model.world-object")
 local inspect = require("libraries.inspect")
 
@@ -21,6 +22,20 @@ local World = {
 World.__index = World
 
 local meter = 32
+
+---@param dt number
+function World:update(dt)
+    self.instance:update(dt)
+end
+
+function World:draw()
+    local player = self.objects.player[1]
+    love.graphics.polygon("line", player.body:getWorldPoints(player.shape:getPoints()))
+
+    for _, obj in ipairs(self.objects[WorldObjectTypeEnum.WALL]) do
+        love.graphics.polygon("line", obj.body:getWorldPoints(obj.shape:getPoints()))
+    end
+end
 
 ---@param opts table
 ---@return World
@@ -56,16 +71,51 @@ function World:createObject(createShape, type, opts)
     return object
 end
 
-function World:update(dt)
-    self.instance:update(dt)
+---@param player Player
+---@return WorldObject
+function World:createPlayer(player)
+    local spriteW = player.sprite:getWidth()
+    local spriteH = player.sprite:getHeight()
+
+    local playerFn = function(body, opts)
+        return love.physics.newRectangleShape(0, 0, spriteW, spriteW)
+    end
+
+    local playerObject = self:createObject(playerFn, WorldObjectTypeEnum.PLAYER, {
+        x = 64,
+        y = 64,
+        width = 64,
+        height = 64,
+        body_type = WorldBodyTypeEnum.DYNAMIC,
+    })
+    playerObject.body:setFixedRotation(true)
+
+    return playerObject
 end
 
-function World:draw()
-    local player = self.objects.player[1]
-    love.graphics.polygon("line", player.body:getWorldPoints(player.shape:getPoints()))
+---@param map Map
+---@param layers MapLayer[]
+function World:createColisionsFromMap(map, layers)
+    local createWallFn = function(body, opts)
+        return love.physics.newRectangleShape(opts.width, opts.height)
+    end
 
-    for _, obj in ipairs(self.objects[WorldObjectTypeEnum.WALL]) do
-        love.graphics.polygon("line", obj.body:getWorldPoints(obj.shape:getPoints()))
+    for _, layer in ipairs(layers) do
+        if not map.instance.layers[layer.name] then
+            goto continue
+        end
+
+        for _, object in ipairs(map.instance.layers[layer.name].objects) do
+            self:createObject(createWallFn, layer.object_type, {
+                x = object.x + (object.width / 2),
+                y = object.y + (object.height / 2),
+                body_type = layer.body_type,
+                width = object.width,
+                height = object.height,
+            })
+        end
+
+        ::continue::
     end
 end
 

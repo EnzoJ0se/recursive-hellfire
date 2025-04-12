@@ -5,16 +5,24 @@ local inspect = require("libraries.inspect")
 local Map = require("src.model.map")
 local LevelLayerEnum = require("src.enum.level-layer-enum")
 local World = require("src.model.world")
-local WorldObjectTypeEnum = require("src.enum.world.world-object-type")
-local WorldBodyTypeEnum = require("src.enum.world.world-body-type")
+local WorldObjectTypeEnum = require("src.enum.world.world-object-type-enum")
+local WorldBodyTypeEnum = require("src.enum.world.world-body-type-enum")
 
----@class Camera
+---@field camera Camera
 local camera = nil
 
----@class Map
+---@field map Map
 local map = nil
 
+---@field levelLayers MapLayer[]
+local levelLayers = {
+    { name = LevelLayerEnum.WALLS, object_type = WorldObjectTypeEnum.WALL, body_type = WorldBodyTypeEnum.STATIC },
+}
+
 ---@class TutorialLevel : BaseLevel
+---@field name string
+---@field player Player
+---@field enemies table
 local TutorialLevel = setmetatable({
     name = "tutorial-level",
     player = nil,
@@ -23,23 +31,20 @@ local TutorialLevel = setmetatable({
 TutorialLevel.__index = TutorialLevel
 
 function TutorialLevel:load()
-    self.world = World:new({})
     map = Map:new("src/level/tutorial/tutorial-map.lua", { LevelLayerEnum.BACKGROUND, LevelLayerEnum.BARRIER })
     camera = Camera:new({ width = map.width, height = map.height })
 
-    self:loadColliders()
-    self.player = Player:new(self.world.objects[WorldObjectTypeEnum.PLAYER][1])
+    self.world = World:new({})
+    self.world:createColisionsFromMap(map, levelLayers)
+    self.player = Player:new()
+    self.player:createCollision(self.world)
 end
 
 ---@param dt number
 function TutorialLevel:update(dt)
     map:update(dt)
     self.world:update(dt)
-
-    local width = map.instance.width * map.instance.tilewidth
-    local height = map.instance.height * map.instance.tileheight
-    self.player:update(dt, width, height)
-
+    self.player:update(dt, camera, map)
     camera:move(self.player.x, self.player.y)
 end
 
@@ -50,29 +55,6 @@ function TutorialLevel:draw()
         self.world:draw()
         self.player:draw()
     end)
-end
-
-function TutorialLevel:loadColliders()
-    self.world:createObject(self.createPlayerFn, WorldObjectTypeEnum.PLAYER, {
-        x = 16,
-        y = 16,
-        width = 32,
-        height = 32,
-        body_type = WorldBodyTypeEnum.DYNAMIC,
-    })
-    self.world.objects[WorldObjectTypeEnum.PLAYER][1].body:setFixedRotation(true)
-
-    if map.instance.layers[LevelLayerEnum.WALLS] then
-        for _, object in ipairs(map.instance.layers[LevelLayerEnum.WALLS].objects) do
-            self.world:createObject(self.createWallFn, WorldObjectTypeEnum.WALL, {
-                x = object.x + (object.width / 2),
-                y = object.y + (object.height / 2),
-                body_type = WorldBodyTypeEnum.STATIC,
-                width = object.width,
-                height = object.height,
-            })
-        end
-    end
 end
 
 return TutorialLevel

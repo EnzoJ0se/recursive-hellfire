@@ -15,6 +15,9 @@ local Camera = {
 }
 Camera.__index = Camera
 
+local screenWidth = love.graphics.getWidth()
+local screenHeight = love.graphics.getHeight()
+
 function Camera:new(opts)
     local camera = {
         x = opts.x or Camera.x,
@@ -35,17 +38,22 @@ function Camera:move(x, y)
     self.x = x
     self.y = y
 
-    local w = love.graphics.getWidth()
-    local h = love.graphics.getHeight()
-
     -- Left border
-    if self.x < w / 2 then self.x = w / 2 end
+    if self.x < screenWidth / 2 then
+        self.x = screenWidth / 2
+    end
     -- Right border
-    if self.y < h / 2 then self.y = h / 2 end
+    if self.y < screenHeight / 2 then
+        self.y = screenHeight / 2
+    end
     -- Right border
-    if self.x > (self.width - w / 2) then self.x = (self.width - w / 2) end
+    if self.x > (self.width - screenWidth / 2) then
+        self.x = (self.width - screenWidth / 2)
+    end
     -- Bottom border
-    if self.y > (self.height - h / 2) then self.y = (self.height - h / 2) end
+    if self.y > (self.height - screenHeight / 2) then
+        self.y = (self.height - screenHeight / 2)
+    end
 end
 
 function Camera:draw(callback)
@@ -64,6 +72,10 @@ end
 
 function Camera:stop()
     love.graphics.pop()
+end
+
+function Camera:getGlobalCoordinates(x, y)
+    return (x + self.x - screenWidth / 2), (y + self.y - screenHeight / 2)
 end
 
 return Camera
