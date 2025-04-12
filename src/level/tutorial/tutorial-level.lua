@@ -56,7 +56,7 @@ function TutorialLevel:draw()
         self.player:draw()
     end)
 
-    love.graphics.print("dash cooldown: " .. tostring(self.player.dash_cooldown), 10, 20)
+    love.graphics.print("dash cooldown: " .. tostring(self.player.dash_cooldown * 10), 10, 20)
 end
 
 return TutorialLevel
